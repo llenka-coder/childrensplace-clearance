@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Новые адвент-календари — свечи, чай, шоколад, косметика</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --card:#fff; --ink:#16181d; --muted:#6b7280; --line:#e5e7eb;
+    --accent:#c8102e; --accent-soft:#fdecef; --green:#0f7b4f;
+    --radius:16px; --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:inherit}
+  .wrap{max-width:1480px;margin:0 auto;padding:28px 24px 80px}
+
+  header.top{margin-bottom:22px}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  h1{font-size:30px;line-height:1.15;margin:6px 0 8px;letter-spacing:-.02em}
+  .sub{color:var(--muted);max-width:980px}
+  .sub a{color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:999px;
+        padding:7px 14px;font-size:13px;box-shadow:var(--shadow)}
+  .stat b{font-variant-numeric:tabular-nums}
+  .note-global{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:12px;
+       padding:12px 14px;font-size:13px;color:#374151;box-shadow:var(--shadow)}
+  .note-global b{color:var(--accent)}
+
+  .toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:10px;
+           align-items:center;background:rgba(244,245,247,.92);backdrop-filter:blur(10px);
+           padding:12px 0;margin:18px 0 22px;border-bottom:1px solid var(--line)}
+  .search{flex:1 1 320px;position:relative}
+  .search input{width:100%;padding:11px 14px 11px 40px;border:1px solid var(--line);
+                border-radius:12px;background:var(--card);font-size:14px;outline:none}
+  .search input:focus{border-color:#9ca3af;box-shadow:0 0 0 3px rgba(156,163,175,.18)}
+  .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.45}
+  select,input.num,label.toggle{background:var(--card);border:1px solid var(--line);border-radius:12px;
+        padding:10px 12px;font-size:14px;outline:none}
+  input.num{width:96px}
+  label.toggle{display:flex;gap:8px;align-items:center;cursor:pointer;user-select:none}
+  label.toggle input{accent-color:var(--accent);width:16px;height:16px}
+  .count{margin-left:auto;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:22px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+        overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .gallery{position:relative;background:#f7f7f8;aspect-ratio:1/1;overflow:hidden}
+  .gallery img.main{width:100%;height:100%;object-fit:contain;display:block;cursor:zoom-in}
+  .nav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;
+       border-radius:50%;background:rgba(255,255,255,.92);color:#111;font-size:20px;line-height:1;
+       cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.16);display:grid;place-items:center;
+       opacity:0;transition:opacity .15s}
+  .gallery:hover .nav{opacity:1}
+  .nav.prev{left:8px}.nav.next{right:8px}
+  .counter{position:absolute;right:10px;bottom:10px;background:rgba(17,24,39,.72);color:#fff;
+           font-size:12px;padding:3px 8px;border-radius:999px;font-variant-numeric:tabular-nums}
+  .off{position:absolute;left:10px;top:10px;background:var(--accent);color:#fff;font-size:12px;
+       font-weight:700;padding:4px 9px;border-radius:999px;letter-spacing:.02em}
+  .thumbs{display:flex;gap:6px;padding:8px;overflow-x:auto;background:#fff;scrollbar-width:thin}
+  .thumbs img{width:42px;height:42px;object-fit:cover;border-radius:8px;border:1px solid var(--line);
+              cursor:pointer;flex:0 0 auto;opacity:.7;transition:.15s}
+  .thumbs img.active{opacity:1;border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+
+  .body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .cat{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  h2{font-size:16px;line-height:1.3;margin:0;font-weight:650;letter-spacing:-.01em}
+  h2 a{text-decoration:none}
+  h2 a:hover{text-decoration:underline}
+  .prices{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .after{font-size:22px;font-weight:800;color:var(--accent);letter-spacing:-.02em}
+  .before{font-size:14px;color:var(--muted);text-decoration:line-through}
+  .save{font-size:12px;color:var(--green);background:#e9f7f0;border-radius:999px;padding:2px 8px;font-weight:600}
+  .range{font-size:12.5px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;
+         border-radius:8px;padding:5px 8px}
+  .desc{margin:0;color:#374151;font-size:13.5px;line-height:1.55;white-space:pre-line;
+        display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .desc.open{-webkit-line-clamp:unset;display:block}
+  .more{align-self:flex-start;background:none;border:0;padding:0;color:var(--accent);
+        font-size:13px;cursor:pointer;font-weight:600}
+
+  .colors{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:2px}
+  .colors .name{font-size:12.5px;color:var(--muted);min-width:52px}
+  .chip{background:#f3f4f6;border:1px solid var(--line);border-radius:8px;padding:3px 9px;
+        white-space:nowrap;font-size:12.5px;cursor:pointer;color:inherit}
+  .chip.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+
+  .sizes{border-top:1px dashed var(--line);margin-top:4px;padding-top:8px;display:flex;
+         flex-direction:column;gap:3px;font-size:12.5px}
+  .sizes .head{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;
+               letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+  .size-row{display:flex;justify-content:space-between;gap:10px;padding:1px 0}
+  .size-row .v-name{color:#4b5563;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .size-row .v-price{white-space:nowrap;font-variant-numeric:tabular-nums}
+  .size-row .v-price b{color:var(--accent)}
+  .size-row .v-price s{color:var(--muted);font-size:11.5px;margin-left:4px}
+
+  .empty{padding:60px 0;text-align:center;color:var(--muted)}
+  .load-wrap{display:flex;justify-content:center;margin-top:30px}
+  .load{background:var(--ink);color:#fff;border:0;border-radius:999px;padding:13px 28px;
+        font-size:14px;font-weight:600;cursor:pointer}
+  .load:hover{opacity:.9}
+  .load + .load{margin-left:10px;background:#fff;color:var(--ink);border:1px solid var(--line)}
+
+  .lightbox{position:fixed;inset:0;background:rgba(10,12,16,.92);z-index:100;display:none;
+            align-items:center;justify-content:center;padding:30px}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:min(92vw,1100px);max-height:88vh;object-fit:contain;border-radius:8px;background:#fff}
+  .lightbox button{position:absolute;background:rgba(255,255,255,.14);color:#fff;border:0;
+       width:44px;height:44px;border-radius:50%;font-size:24px;cursor:pointer;display:grid;place-items:center}
+  .lightbox button:hover{background:rgba(255,255,255,.25)}
+  .lb-close{top:18px;right:18px}
+  .lb-prev{left:18px;top:50%;transform:translateY(-50%)}
+  .lb-next{right:18px;top:50%;transform:translateY(-50%)}
+  .lb-cap{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#d1d5db;font-size:13px}
+
+  footer{margin-top:44px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+  @media(max-width:640px){
+    .wrap{padding:18px 14px 60px}
+    h1{font-size:23px}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+    .nav{opacity:1}
+    .count{margin-left:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">The Children's Place · Clearance</div>
+    <h1>Новые адвент-календари — свечи, чай, шоколад, косметика</h1>
+    <p class="sub">
+      23 новых адвент-календаря из Nordstrom: свечи, чай, шоколад и косметика. Не дороже $400, без Gift with Purchase. В цену добавлен налог Нью-Йорка 8.875%. 42 подарочных набора уже загружены ранее и здесь не дублируются. Отсортировано по скидке/выгоде.
+    </p>
+    <div class="stats" id="stats"></div>
+    <div class="note-global" id="varnote"></div>
+  </header>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path>
+      </svg>
+      <input id="q" type="search" placeholder="Поиск: название, описание, цвет, размер…" autocomplete="off">
+    </div>
+    <select id="cat"><option value="">Все категории</option></select>
+    <select id="age"><option value="">Все возрасты</option></select>
+    <input class="num" id="pmin" type="number" min="0" step="1" placeholder="Цена от $">
+    <input class="num" id="pmax" type="number" min="0" step="1" placeholder="до $">
+    <select id="sort">
+      <option value="price-asc">Цена ↑</option>
+      <option value="price-desc">Цена ↓</option>
+      <option value="discount">Скидка ↓</option>
+      <option value="name">Название А–Я</option>
+    </select>
+    <label class="toggle"><input type="checkbox" id="varies"> Цена зависит от цвета/размера</label>
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>Ничего не найдено</div>
+  <div class="load-wrap"><button class="load" id="load" hidden>Показать ещё</button><button class="load" id="loadall" hidden>Показать все</button></div>
+
+  <footer>
+    Источник: childrensplace.com, категория Clearance (id 454010). Данные — Unbxd/PLP.
+    «Цена до скидки» — list price, «после» — текущая цена доступного варианта.
+    В карточке показаны все цвета; при переключении цвета меняются фото и цены размеров.
+    Цены магазина в USD, без доставки, налогов и сборов.
+  </footer>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" data-lb="close">×</button>
+  <button class="lb-prev" data-lb="prev">‹</button>
+  <img id="lb-img" alt="">
+  <button class="lb-next" data-lb="next">›</button>
+  <div class="lb-cap" id="lb-cap"></div>
+</div>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"The Children's Place — Clearance","numberOfItems":23,"itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"Product","name":"MAC Cosmetics MAC Cosmetics  24 Days of M·A·C Icons Advent Calendar $565 Value","description":"Адвент-календарь MAC Cosmetics: MAC Cosmetics  24 Days of M·A·C Icons Advent Calendar $565 Value. Заявленная ценность набора: $565.","sku":"9221501","url":"https://www.nordstrom.com/s/24-days-of-mac-icons-advent-calendar-565-value/9221501","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9221501.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"MAC Cosmetics MAC Cosmetics  24 Days of M·A·C Icons Advent Calendar $565 Value — One Size","sku":"9221501","size":"One Size","offers":{"@type":"Offer","price":"272.19","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/24-days-of-mac-icons-advent-calendar-565-value/9221501","listPrice":"567.06","oldPrice":"567.06","old_price":"567.06","regularPrice":"567.06","highPrice":"567.06","lowPrice":"272.19","priceSpecification":[{"@type":"UnitPriceSpecification","price":"272.19","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"567.06","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"272.19","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/24-days-of-mac-icons-advent-calendar-565-value/9221501","listPrice":"567.06","oldPrice":"567.06","old_price":"567.06","regularPrice":"567.06","highPrice":"567.06","lowPrice":"272.19","priceSpecification":[{"@type":"UnitPriceSpecification","price":"272.19","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"567.06","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"567.06","oldPrice":"567.06","old_price":"567.06","regularPrice":"567.06","compareAtPrice":"567.06","compare_at_price":"567.06","lowPrice":"272.19","highPrice":"567.06"}},{"@type":"ListItem","position":2,"item":{"@type":"Product","name":"Benefit Cosmetics Benefit Cosmetics  The Hotel Beneville Advent Calendar Set $330 Value","description":"Адвент-календарь Benefit Cosmetics: Benefit Cosmetics  The Hotel Beneville Advent Calendar Set $330 Value. Заявленная ценность набора: $330.","sku":"9224747","url":"https://www.nordstrom.com/s/benefit-holiday-2026-advent-calendar/9224747","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9224747.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Benefit Cosmetics Benefit Cosmetics  The Hotel Beneville Advent Calendar Set $330 Value — One Size","sku":"9224747","size":"One Size","offers":{"@type":"Offer","price":"182.91","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/benefit-holiday-2026-advent-calendar/9224747","listPrice":"332.56","oldPrice":"332.56","old_price":"332.56","regularPrice":"332.56","highPrice":"332.56","lowPrice":"182.91","priceSpecification":[{"@type":"UnitPriceSpecification","price":"182.91","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"332.56","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"182.91","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/benefit-holiday-2026-advent-calendar/9224747","listPrice":"332.56","oldPrice":"332.56","old_price":"332.56","regularPrice":"332.56","highPrice":"332.56","lowPrice":"182.91","priceSpecification":[{"@type":"UnitPriceSpecification","price":"182.91","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"332.56","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"332.56","oldPrice":"332.56","old_price":"332.56","regularPrice":"332.56","compareAtPrice":"332.56","compare_at_price":"332.56","lowPrice":"182.91","highPrice":"332.56"}},{"@type":"ListItem","position":3,"item":{"@type":"Product","name":"Charlotte Tilbury Charlotte Tilbury  Hollywood Beauty Wonderland 15-Piece Advent Calendar Set $390 Value","description":"Адвент-календарь Charlotte Tilbury: Charlotte Tilbury  Hollywood Beauty Wonderland 15-Piece Advent Calendar Set $390 Value. Заявленная ценность набора: $390.","sku":"9217570","url":"https://www.nordstrom.com/s/hollywood-beauty-wonderland-15-piece-advent-calendar-set/9217570","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9217570.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Charlotte Tilbury Charlotte Tilbury  Hollywood Beauty Wonderland 15-Piece Advent Calendar Set $390 Value — One Size","sku":"9217570","size":"One Size","offers":{"@type":"Offer","price":"239.53","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/hollywood-beauty-wonderland-15-piece-advent-calendar-set/9217570","listPrice":"392.67","oldPrice":"392.67","old_price":"392.67","regularPrice":"392.67","highPrice":"392.67","lowPrice":"239.53","priceSpecification":[{"@type":"UnitPriceSpecification","price":"239.53","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"392.67","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"239.53","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/hollywood-beauty-wonderland-15-piece-advent-calendar-set/9217570","listPrice":"392.67","oldPrice":"392.67","old_price":"392.67","regularPrice":"392.67","highPrice":"392.67","lowPrice":"239.53","priceSpecification":[{"@type":"UnitPriceSpecification","price":"239.53","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"392.67","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"392.67","oldPrice":"392.67","old_price":"392.67","regularPrice":"392.67","compareAtPrice":"392.67","compare_at_price":"392.67","lowPrice":"239.53","highPrice":"392.67"}},{"@type":"ListItem","position":4,"item":{"@type":"Product","name":"L'Occitane L'Occitane  Advent Calendar Set (Limited Edition) $257 Value","description":"Адвент-календарь L'Occitane: L'Occitane  Advent Calendar Set (Limited Edition) $257 Value. Заявленная ценность набора: $257.","sku":"9192152","url":"https://www.nordstrom.com/s/loccitane-2026-advent-calendar-whs/9192152","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9192152.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"L'Occitane L'Occitane  Advent Calendar Set (Limited Edition) $257 Value — One Size","sku":"9192152","size":"One Size","offers":{"@type":"Offer","price":"168.76","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/loccitane-2026-advent-calendar-whs/9192152","listPrice":"255.70","oldPrice":"255.70","old_price":"255.70","regularPrice":"255.70","highPrice":"255.70","lowPrice":"168.76","priceSpecification":[{"@type":"UnitPriceSpecification","price":"168.76","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"255.70","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"168.76","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/loccitane-2026-advent-calendar-whs/9192152","listPrice":"255.70","oldPrice":"255.70","old_price":"255.70","regularPrice":"255.70","highPrice":"255.70","lowPrice":"168.76","priceSpecification":[{"@type":"UnitPriceSpecification","price":"168.76","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"255.70","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"255.70","oldPrice":"255.70","old_price":"255.70","regularPrice":"255.70","compareAtPrice":"255.70","compare_at_price":"255.70","lowPrice":"168.76","highPrice":"255.70"}},{"@type":"ListItem","position":5,"item":{"@type":"Product","name":"Venchi Venchi  Vintage Advent Calendar","description":"Адвент-календарь Venchi: Venchi  Vintage Advent Calendar.","sku":"9260482","url":"https://www.nordstrom.com/s/venchi-advent-calendar-christmas-vint/9260482","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9260482.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Venchi Venchi  Vintage Advent Calendar — One Size","sku":"9260482","size":"One Size","offers":{"@type":"Offer","price":"29.29","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/venchi-advent-calendar-christmas-vint/9260482","listPrice":"29.29","oldPrice":"29.29","old_price":"29.29","regularPrice":"29.29","highPrice":"29.29","lowPrice":"29.29","priceSpecification":[{"@type":"UnitPriceSpecification","price":"29.29","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"29.29","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"29.29","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/venchi-advent-calendar-christmas-vint/9260482","listPrice":"29.29","oldPrice":"29.29","old_price":"29.29","regularPrice":"29.29","highPrice":"29.29","lowPrice":"29.29","priceSpecification":[{"@type":"UnitPriceSpecification","price":"29.29","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"29.29","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"29.29","oldPrice":"29.29","old_price":"29.29","regularPrice":"29.29","compareAtPrice":"29.29","compare_at_price":"29.29","lowPrice":"29.29","highPrice":"29.29"}},{"@type":"ListItem","position":6,"item":{"@type":"Product","name":"Tea Forté Tea Forté  Winter Chalet Tea Advent Calendar","description":"Адвент-календарь Tea Forté: Tea Forté  Winter Chalet Tea Advent Calendar.","sku":"9205216","url":"https://www.nordstrom.com/s/winter-chalet-tea-advent-calendar/9205216","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9205216.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Tea Forté Tea Forté  Winter Chalet Tea Advent Calendar — One Size","sku":"9205216","size":"One Size","offers":{"@type":"Offer","price":"43.55","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/winter-chalet-tea-advent-calendar/9205216","listPrice":"43.55","oldPrice":"43.55","old_price":"43.55","regularPrice":"43.55","highPrice":"43.55","lowPrice":"43.55","priceSpecification":[{"@type":"UnitPriceSpecification","price":"43.55","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"43.55","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"43.55","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/winter-chalet-tea-advent-calendar/9205216","listPrice":"43.55","oldPrice":"43.55","old_price":"43.55","regularPrice":"43.55","highPrice":"43.55","lowPrice":"43.55","priceSpecification":[{"@type":"UnitPriceSpecification","price":"43.55","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"43.55","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"43.55","oldPrice":"43.55","old_price":"43.55","regularPrice":"43.55","compareAtPrice":"43.55","compare_at_price":"43.55","lowPrice":"43.55","highPrice":"43.55"}},{"@type":"ListItem","position":7,"item":{"@type":"Product","name":"Whittard of Chelsea Whittard of Chelsea  Whittard's Tea Advent Calendar, 48ct","description":"Адвент-календарь Whittard of Chelsea: Whittard of Chelsea  Whittard's Tea Advent Calendar, 48ct.","sku":"9244646","url":"https://www.nordstrom.com/s/whittards-tea-advent-calendar-48ct/9244646","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9244646.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Whittard of Chelsea Whittard of Chelsea  Whittard's Tea Advent Calendar, 48ct — One Size","sku":"9244646","size":"One Size","offers":{"@type":"Offer","price":"48.99","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/whittards-tea-advent-calendar-48ct/9244646","listPrice":"48.99","oldPrice":"48.99","old_price":"48.99","regularPrice":"48.99","highPrice":"48.99","lowPrice":"48.99","priceSpecification":[{"@type":"UnitPriceSpecification","price":"48.99","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"48.99","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"48.99","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/whittards-tea-advent-calendar-48ct/9244646","listPrice":"48.99","oldPrice":"48.99","old_price":"48.99","regularPrice":"48.99","highPrice":"48.99","lowPrice":"48.99","priceSpecification":[{"@type":"UnitPriceSpecification","price":"48.99","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"48.99","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"48.99","oldPrice":"48.99","old_price":"48.99","regularPrice":"48.99","compareAtPrice":"48.99","compare_at_price":"48.99","lowPrice":"48.99","highPrice":"48.99"}},{"@type":"ListItem","position":8,"item":{"@type":"Product","name":"YANKEE CANDLE YANKEE CANDLE  Signature Votive Mini Candle Jars - 12 Days of Christmas Candle Advent Calendar 2026","description":"Адвент-календарь YANKEE CANDLE: YANKEE CANDLE  Signature Votive Mini Candle Jars - 12 Days of Christmas Candle Advent Calendar 2026.","sku":"9284480","url":"https://www.nordstrom.com/s/signature-votive-mini-candle-jars-12-days-of-christmas-candle-advent-calendar-2026/9284480","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9284480.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"YANKEE CANDLE YANKEE CANDLE  Signature Votive Mini Candle Jars - 12 Days of Christmas Candle Advent Calendar 2026 — One Size","sku":"9284480","size":"One Size","offers":{"@type":"Offer","price":"76.20","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/signature-votive-mini-candle-jars-12-days-of-christmas-candle-advent-calendar-2026/9284480","listPrice":"76.20","oldPrice":"76.20","old_price":"76.20","regularPrice":"76.20","highPrice":"76.20","lowPrice":"76.20","priceSpecification":[{"@type":"UnitPriceSpecification","price":"76.20","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"76.20","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"76.20","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/signature-votive-mini-candle-jars-12-days-of-christmas-candle-advent-calendar-2026/9284480","listPrice":"76.20","oldPrice":"76.20","old_price":"76.20","regularPrice":"76.20","highPrice":"76.20","lowPrice":"76.20","priceSpecification":[{"@type":"UnitPriceSpecification","price":"76.20","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"76.20","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"76.20","oldPrice":"76.20","old_price":"76.20","regularPrice":"76.20","compareAtPrice":"76.20","compare_at_price":"76.20","lowPrice":"76.20","highPrice":"76.20"}},{"@type":"ListItem","position":9,"item":{"@type":"Product","name":"Tea Forté Tea Forté  24-Piece Warming Joy Advent Calendar","description":"Адвент-календарь Tea Forté: Tea Forté  24-Piece Warming Joy Advent Calendar.","sku":"9205226","url":"https://www.nordstrom.com/s/tea-forte-warming-joy-advent-calendar/9205226","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9205226.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Tea Forté Tea Forté  24-Piece Warming Joy Advent Calendar — One Size","sku":"9205226","size":"One Size","offers":{"@type":"Offer","price":"76.21","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/tea-forte-warming-joy-advent-calendar/9205226","listPrice":"76.21","oldPrice":"76.21","old_price":"76.21","regularPrice":"76.21","highPrice":"76.21","lowPrice":"76.21","priceSpecification":[{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"76.21","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/tea-forte-warming-joy-advent-calendar/9205226","listPrice":"76.21","oldPrice":"76.21","old_price":"76.21","regularPrice":"76.21","highPrice":"76.21","lowPrice":"76.21","priceSpecification":[{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"76.21","oldPrice":"76.21","old_price":"76.21","regularPrice":"76.21","compareAtPrice":"76.21","compare_at_price":"76.21","lowPrice":"76.21","highPrice":"76.21"}},{"@type":"ListItem","position":10,"item":{"@type":"Product","name":"NEUHAUS NEUHAUS  2025 Classic Chocolate Advent Calendar","description":"Адвент-календарь NEUHAUS: NEUHAUS  2025 Classic Chocolate Advent Calendar.","sku":"8658107","url":"https://www.nordstrom.com/s/2025-classic-chocolate-advent-calendar/8658107","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8658107.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"NEUHAUS NEUHAUS  2025 Classic Chocolate Advent Calendar — One Size","sku":"8658107","size":"One Size","offers":{"@type":"Offer","price":"76.21","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/2025-classic-chocolate-advent-calendar/8658107","listPrice":"76.21","oldPrice":"76.21","old_price":"76.21","regularPrice":"76.21","highPrice":"76.21","lowPrice":"76.21","priceSpecification":[{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"76.21","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/2025-classic-chocolate-advent-calendar/8658107","listPrice":"76.21","oldPrice":"76.21","old_price":"76.21","regularPrice":"76.21","highPrice":"76.21","lowPrice":"76.21","priceSpecification":[{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"76.21","oldPrice":"76.21","old_price":"76.21","regularPrice":"76.21","compareAtPrice":"76.21","compare_at_price":"76.21","lowPrice":"76.21","highPrice":"76.21"}},{"@type":"ListItem","position":11,"item":{"@type":"Product","name":"Tea Forté Tea Forté  Warming Joy Herbal Advent Calendar","description":"Адвент-календарь Tea Forté: Tea Forté  Warming Joy Herbal Advent Calendar.","sku":"9205213","url":"https://www.nordstrom.com/s/tea-forte-warming-joy-herbal-adv/9205213","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9205213.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Tea Forté Tea Forté  Warming Joy Herbal Advent Calendar — One Size","sku":"9205213","size":"One Size","offers":{"@type":"Offer","price":"76.21","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/tea-forte-warming-joy-herbal-adv/9205213","listPrice":"76.21","oldPrice":"76.21","old_price":"76.21","regularPrice":"76.21","highPrice":"76.21","lowPrice":"76.21","priceSpecification":[{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"76.21","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/tea-forte-warming-joy-herbal-adv/9205213","listPrice":"76.21","oldPrice":"76.21","old_price":"76.21","regularPrice":"76.21","highPrice":"76.21","lowPrice":"76.21","priceSpecification":[{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"76.21","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"76.21","oldPrice":"76.21","old_price":"76.21","regularPrice":"76.21","compareAtPrice":"76.21","compare_at_price":"76.21","lowPrice":"76.21","highPrice":"76.21"}},{"@type":"ListItem","position":12,"item":{"@type":"Product","name":"Whittard of Chelsea Whittard of Chelsea  Whittard Hot Cocoa Advent Calendar","description":"Адвент-календарь Whittard of Chelsea: Whittard of Chelsea  Whittard Hot Cocoa Advent Calendar.","sku":"9356498","url":"https://www.nordstrom.com/s/whittard-hot-cocoa-advent-calendar/9356498","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9356498.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Whittard of Chelsea Whittard of Chelsea  Whittard Hot Cocoa Advent Calendar — One Size","sku":"9356498","size":"One Size","offers":{"@type":"Offer","price":"87.10","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/whittard-hot-cocoa-advent-calendar/9356498","listPrice":"87.10","oldPrice":"87.10","old_price":"87.10","regularPrice":"87.10","highPrice":"87.10","lowPrice":"87.10","priceSpecification":[{"@type":"UnitPriceSpecification","price":"87.10","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"87.10","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"87.10","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/whittard-hot-cocoa-advent-calendar/9356498","listPrice":"87.10","oldPrice":"87.10","old_price":"87.10","regularPrice":"87.10","highPrice":"87.10","lowPrice":"87.10","priceSpecification":[{"@type":"UnitPriceSpecification","price":"87.10","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"87.10","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"87.10","oldPrice":"87.10","old_price":"87.10","regularPrice":"87.10","compareAtPrice":"87.10","compare_at_price":"87.10","lowPrice":"87.10","highPrice":"87.10"}},{"@type":"ListItem","position":13,"item":{"@type":"Product","name":"Elizabeth Arden Elizabeth Arden  12 Days of Elizabeth Arden Beauty, 12-Piece Advent Calendar Set","description":"Адвент-календарь Elizabeth Arden: Elizabeth Arden  12 Days of Elizabeth Arden Beauty, 12-Piece Advent Calendar Set.","sku":"9332398","url":"https://www.nordstrom.com/s/12-days-of-elizabeth-arden-beauty-12-piece-advent-calendar-set/9332398","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9332398.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Elizabeth Arden Elizabeth Arden  12 Days of Elizabeth Arden Beauty, 12-Piece Advent Calendar Set — One Size","sku":"9332398","size":"One Size","offers":{"@type":"Offer","price":"97.99","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/12-days-of-elizabeth-arden-beauty-12-piece-advent-calendar-set/9332398","listPrice":"97.99","oldPrice":"97.99","old_price":"97.99","regularPrice":"97.99","highPrice":"97.99","lowPrice":"97.99","priceSpecification":[{"@type":"UnitPriceSpecification","price":"97.99","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"97.99","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"97.99","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/12-days-of-elizabeth-arden-beauty-12-piece-advent-calendar-set/9332398","listPrice":"97.99","oldPrice":"97.99","old_price":"97.99","regularPrice":"97.99","highPrice":"97.99","lowPrice":"97.99","priceSpecification":[{"@type":"UnitPriceSpecification","price":"97.99","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"97.99","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"97.99","oldPrice":"97.99","old_price":"97.99","regularPrice":"97.99","compareAtPrice":"97.99","compare_at_price":"97.99","lowPrice":"97.99","highPrice":"97.99"}},{"@type":"ListItem","position":14,"item":{"@type":"Product","name":"Venchi Venchi  Prestige Advent Calendar","description":"Адвент-календарь Venchi: Venchi  Prestige Advent Calendar.","sku":"9260480","url":"https://www.nordstrom.com/s/venchi-advent-prestige-calendar-chris/9260480","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9260480.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Venchi Venchi  Prestige Advent Calendar — One Size","sku":"9260480","size":"One Size","offers":{"@type":"Offer","price":"107.79","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/venchi-advent-prestige-calendar-chris/9260480","listPrice":"107.79","oldPrice":"107.79","old_price":"107.79","regularPrice":"107.79","highPrice":"107.79","lowPrice":"107.79","priceSpecification":[{"@type":"UnitPriceSpecification","price":"107.79","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"107.79","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"107.79","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/venchi-advent-prestige-calendar-chris/9260480","listPrice":"107.79","oldPrice":"107.79","old_price":"107.79","regularPrice":"107.79","highPrice":"107.79","lowPrice":"107.79","priceSpecification":[{"@type":"UnitPriceSpecification","price":"107.79","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"107.79","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"107.79","oldPrice":"107.79","old_price":"107.79","regularPrice":"107.79","compareAtPrice":"107.79","compare_at_price":"107.79","lowPrice":"107.79","highPrice":"107.79"}},{"@type":"ListItem","position":15,"item":{"@type":"Product","name":"NEUHAUS NEUHAUS  2025 Chocolate Story Advent Calendar Book","description":"Адвент-календарь NEUHAUS: NEUHAUS  2025 Chocolate Story Advent Calendar Book.","sku":"8658093","url":"https://www.nordstrom.com/s/2025-chocolate-story-advent-calendar-book/8658093","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8658093.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"NEUHAUS NEUHAUS  2025 Chocolate Story Advent Calendar Book — One Size","sku":"8658093","size":"One Size","offers":{"@type":"Offer","price":"108.88","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/2025-chocolate-story-advent-calendar-book/8658093","listPrice":"108.88","oldPrice":"108.88","old_price":"108.88","regularPrice":"108.88","highPrice":"108.88","lowPrice":"108.88","priceSpecification":[{"@type":"UnitPriceSpecification","price":"108.88","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"108.88","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"108.88","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/2025-chocolate-story-advent-calendar-book/8658093","listPrice":"108.88","oldPrice":"108.88","old_price":"108.88","regularPrice":"108.88","highPrice":"108.88","lowPrice":"108.88","priceSpecification":[{"@type":"UnitPriceSpecification","price":"108.88","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"108.88","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"108.88","oldPrice":"108.88","old_price":"108.88","regularPrice":"108.88","compareAtPrice":"108.88","compare_at_price":"108.88","lowPrice":"108.88","highPrice":"108.88"}},{"@type":"ListItem","position":16,"item":{"@type":"Product","name":"COMPARTES COMPARTES  Nutcracker Chocolate Advent Calendar","description":"Адвент-календарь COMPARTES: COMPARTES  Nutcracker Chocolate Advent Calendar.","sku":"9250307","url":"https://www.nordstrom.com/s/compartes-nutcracker-advent-calendar/9250307","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9250307.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"COMPARTES COMPARTES  Nutcracker Chocolate Advent Calendar — One Size","sku":"9250307","size":"One Size","offers":{"@type":"Offer","price":"130.65","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/compartes-nutcracker-advent-calendar/9250307","listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","highPrice":"130.65","lowPrice":"130.65","priceSpecification":[{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"130.65","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/compartes-nutcracker-advent-calendar/9250307","listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","highPrice":"130.65","lowPrice":"130.65","priceSpecification":[{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","compareAtPrice":"130.65","compare_at_price":"130.65","lowPrice":"130.65","highPrice":"130.65"}},{"@type":"ListItem","position":17,"item":{"@type":"Product","name":"Whittard of Chelsea Whittard of Chelsea  Hot Chocolate Advent Calendar, 48ct","description":"Адвент-календарь Whittard of Chelsea: Whittard of Chelsea  Hot Chocolate Advent Calendar, 48ct.","sku":"9244432","url":"https://www.nordstrom.com/s/hot-chocolate-advent-calendar-48ct/9244432","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9244432.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Whittard of Chelsea Whittard of Chelsea  Hot Chocolate Advent Calendar, 48ct — One Size","sku":"9244432","size":"One Size","offers":{"@type":"Offer","price":"130.65","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/hot-chocolate-advent-calendar-48ct/9244432","listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","highPrice":"130.65","lowPrice":"130.65","priceSpecification":[{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"130.65","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/hot-chocolate-advent-calendar-48ct/9244432","listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","highPrice":"130.65","lowPrice":"130.65","priceSpecification":[{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","compareAtPrice":"130.65","compare_at_price":"130.65","lowPrice":"130.65","highPrice":"130.65"}},{"@type":"ListItem","position":18,"item":{"@type":"Product","name":"COMPARTES COMPARTES  Castle Chocolate Advent Calendar","description":"Адвент-календарь COMPARTES: COMPARTES  Castle Chocolate Advent Calendar.","sku":"9250294","url":"https://www.nordstrom.com/s/compartes-castle-advent-calendar/9250294","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9250294.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"COMPARTES COMPARTES  Castle Chocolate Advent Calendar — One Size","sku":"9250294","size":"One Size","offers":{"@type":"Offer","price":"130.65","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/compartes-castle-advent-calendar/9250294","listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","highPrice":"130.65","lowPrice":"130.65","priceSpecification":[{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"130.65","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/compartes-castle-advent-calendar/9250294","listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","highPrice":"130.65","lowPrice":"130.65","priceSpecification":[{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","compareAtPrice":"130.65","compare_at_price":"130.65","lowPrice":"130.65","highPrice":"130.65"}},{"@type":"ListItem","position":19,"item":{"@type":"Product","name":"Whittard of Chelsea Whittard of Chelsea  Whittard Loose Leaf Tea Advent Calendar","description":"Адвент-календарь Whittard of Chelsea: Whittard of Chelsea  Whittard Loose Leaf Tea Advent Calendar.","sku":"8659593","url":"https://www.nordstrom.com/s/whittard-loose-leaf-tea-advent-calendar/8659593","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8659593.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Whittard of Chelsea Whittard of Chelsea  Whittard Loose Leaf Tea Advent Calendar — One Size","sku":"8659593","size":"One Size","offers":{"@type":"Offer","price":"130.65","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/whittard-loose-leaf-tea-advent-calendar/8659593","listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","highPrice":"130.65","lowPrice":"130.65","priceSpecification":[{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"130.65","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/whittard-loose-leaf-tea-advent-calendar/8659593","listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","highPrice":"130.65","lowPrice":"130.65","priceSpecification":[{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","compareAtPrice":"130.65","compare_at_price":"130.65","lowPrice":"130.65","highPrice":"130.65"}},{"@type":"ListItem","position":20,"item":{"@type":"Product","name":"COMPARTES COMPARTES  Winter Fox Chocolate Advent Calendar","description":"Адвент-календарь COMPARTES: COMPARTES  Winter Fox Chocolate Advent Calendar.","sku":"8558230","url":"https://www.nordstrom.com/s/winter-fox-chocolate-advent-calendar/8558230","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8558230.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"COMPARTES COMPARTES  Winter Fox Chocolate Advent Calendar — One Size","sku":"8558230","size":"One Size","offers":{"@type":"Offer","price":"130.65","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/winter-fox-chocolate-advent-calendar/8558230","listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","highPrice":"130.65","lowPrice":"130.65","priceSpecification":[{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"130.65","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/winter-fox-chocolate-advent-calendar/8558230","listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","highPrice":"130.65","lowPrice":"130.65","priceSpecification":[{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"130.65","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"130.65","oldPrice":"130.65","old_price":"130.65","regularPrice":"130.65","compareAtPrice":"130.65","compare_at_price":"130.65","lowPrice":"130.65","highPrice":"130.65"}},{"@type":"ListItem","position":21,"item":{"@type":"Product","name":"Voluspa Voluspa  Holiday Advent Calendar Gift Set","description":"Адвент-календарь Voluspa: Voluspa  Holiday Advent Calendar Gift Set.","sku":"9221724","url":"https://www.nordstrom.com/s/voluspa-holiday-advent-calendar-gift-s/9221724","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9221724.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Voluspa Voluspa  Holiday Advent Calendar Gift Set — One Size","sku":"9221724","size":"One Size","offers":{"@type":"Offer","price":"201.42","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/voluspa-holiday-advent-calendar-gift-s/9221724","listPrice":"201.42","oldPrice":"201.42","old_price":"201.42","regularPrice":"201.42","highPrice":"201.42","lowPrice":"201.42","priceSpecification":[{"@type":"UnitPriceSpecification","price":"201.42","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"201.42","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"201.42","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/voluspa-holiday-advent-calendar-gift-s/9221724","listPrice":"201.42","oldPrice":"201.42","old_price":"201.42","regularPrice":"201.42","highPrice":"201.42","lowPrice":"201.42","priceSpecification":[{"@type":"UnitPriceSpecification","price":"201.42","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"201.42","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"201.42","oldPrice":"201.42","old_price":"201.42","regularPrice":"201.42","compareAtPrice":"201.42","compare_at_price":"201.42","lowPrice":"201.42","highPrice":"201.42"}},{"@type":"ListItem","position":22,"item":{"@type":"Product","name":"JURLIQUE JURLIQUE  Advent Calendar","description":"Адвент-календарь JURLIQUE: JURLIQUE  Advent Calendar.","sku":"2278539","url":"https://www.nordstrom.com/s/advent-calendar/2278539","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/2278539.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"JURLIQUE JURLIQUE  Advent Calendar — One Size","sku":"2278539","size":"One Size","offers":{"@type":"Offer","price":"206.86","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/advent-calendar/2278539","listPrice":"206.86","oldPrice":"206.86","old_price":"206.86","regularPrice":"206.86","highPrice":"206.86","lowPrice":"206.86","priceSpecification":[{"@type":"UnitPriceSpecification","price":"206.86","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"206.86","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"206.86","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/advent-calendar/2278539","listPrice":"206.86","oldPrice":"206.86","old_price":"206.86","regularPrice":"206.86","highPrice":"206.86","lowPrice":"206.86","priceSpecification":[{"@type":"UnitPriceSpecification","price":"206.86","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"206.86","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"206.86","oldPrice":"206.86","old_price":"206.86","regularPrice":"206.86","compareAtPrice":"206.86","compare_at_price":"206.86","lowPrice":"206.86","highPrice":"206.86"}},{"@type":"ListItem","position":23,"item":{"@type":"Product","name":"Glasshouse Fragrances Glasshouse Fragrances  24 Days of Christmas Advent Calendar","description":"Адвент-календарь Glasshouse Fragrances: Glasshouse Fragrances  24 Days of Christmas Advent Calendar.","sku":"9161280","url":"https://www.nordstrom.com/s/glasshouse-fragrances-24-day-advent-calendar-x26/9161280","image":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9161280.jpg"],"brand":{"@type":"Brand","name":"The Children's Place"},"category":"Адвент-календарь","color":["One Color"],"size":["One Size"],"hasVariant":[{"@type":"Product","name":"Glasshouse Fragrances Glasshouse Fragrances  24 Days of Christmas Advent Calendar — One Size","sku":"9161280","size":"One Size","offers":{"@type":"Offer","price":"326.63","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/glasshouse-fragrances-24-day-advent-calendar-x26/9161280","listPrice":"326.63","oldPrice":"326.63","old_price":"326.63","regularPrice":"326.63","highPrice":"326.63","lowPrice":"326.63","priceSpecification":[{"@type":"UnitPriceSpecification","price":"326.63","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"326.63","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}],"size":"One Size"}}],"offers":{"@type":"Offer","price":"326.63","priceCurrency":"USD","priceValidUntil":"2026-12-31","availability":"https://schema.org/InStock","url":"https://www.nordstrom.com/s/glasshouse-fragrances-24-day-advent-calendar-x26/9161280","listPrice":"326.63","oldPrice":"326.63","old_price":"326.63","regularPrice":"326.63","highPrice":"326.63","lowPrice":"326.63","priceSpecification":[{"@type":"UnitPriceSpecification","price":"326.63","priceCurrency":"USD","priceType":"https://schema.org/SalePrice"},{"@type":"UnitPriceSpecification","price":"326.63","priceCurrency":"USD","priceType":"https://schema.org/ListPrice"}]},"listPrice":"326.63","oldPrice":"326.63","old_price":"326.63","regularPrice":"326.63","compareAtPrice":"326.63","compare_at_price":"326.63","lowPrice":"326.63","highPrice":"326.63"}}]}</script>
+<script id="data" type="application/json">[{"id":"adv-9221501","t":"MAC Cosmetics MAC Cosmetics  24 Days of M·A·C Icons Advent Calendar $565 Value","u":"https://www.nordstrom.com/s/24-days-of-mac-icons-advent-calendar-565-value/9221501","d":"Адвент-календарь MAC Cosmetics: MAC Cosmetics  24 Days of M·A·C Icons Advent Calendar $565 Value. Заявленная ценность набора: $565.","c":"Адвент-календарь","g":"Adult","pa":272.19,"pb":567.06,"pmax":272.19,"disc":52,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9221501.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9221501.jpg"],"s":[["One Size",272.19,567.06]]}]},{"id":"adv-9224747","t":"Benefit Cosmetics Benefit Cosmetics  The Hotel Beneville Advent Calendar Set $330 Value","u":"https://www.nordstrom.com/s/benefit-holiday-2026-advent-calendar/9224747","d":"Адвент-календарь Benefit Cosmetics: Benefit Cosmetics  The Hotel Beneville Advent Calendar Set $330 Value. Заявленная ценность набора: $330.","c":"Адвент-календарь","g":"Adult","pa":182.91,"pb":332.56,"pmax":182.91,"disc":45,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9224747.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9224747.jpg"],"s":[["One Size",182.91,332.56]]}]},{"id":"adv-9217570","t":"Charlotte Tilbury Charlotte Tilbury  Hollywood Beauty Wonderland 15-Piece Advent Calendar Set $390 Value","u":"https://www.nordstrom.com/s/hollywood-beauty-wonderland-15-piece-advent-calendar-set/9217570","d":"Адвент-календарь Charlotte Tilbury: Charlotte Tilbury  Hollywood Beauty Wonderland 15-Piece Advent Calendar Set $390 Value. Заявленная ценность набора: $390.","c":"Адвент-календарь","g":"Adult","pa":239.53,"pb":392.67,"pmax":239.53,"disc":39,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9217570.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9217570.jpg"],"s":[["One Size",239.53,392.67]]}]},{"id":"adv-9192152","t":"L'Occitane L'Occitane  Advent Calendar Set (Limited Edition) $257 Value","u":"https://www.nordstrom.com/s/loccitane-2026-advent-calendar-whs/9192152","d":"Адвент-календарь L'Occitane: L'Occitane  Advent Calendar Set (Limited Edition) $257 Value. Заявленная ценность набора: $257.","c":"Адвент-календарь","g":"Adult","pa":168.76,"pb":255.7,"pmax":168.76,"disc":34,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9192152.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9192152.jpg"],"s":[["One Size",168.76,255.7]]}]},{"id":"adv-9260482","t":"Venchi Venchi  Vintage Advent Calendar","u":"https://www.nordstrom.com/s/venchi-advent-calendar-christmas-vint/9260482","d":"Адвент-календарь Venchi: Venchi  Vintage Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":29.29,"pb":29.29,"pmax":29.29,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9260482.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9260482.jpg"],"s":[["One Size",29.29,29.29]]}]},{"id":"adv-9205216","t":"Tea Forté Tea Forté  Winter Chalet Tea Advent Calendar","u":"https://www.nordstrom.com/s/winter-chalet-tea-advent-calendar/9205216","d":"Адвент-календарь Tea Forté: Tea Forté  Winter Chalet Tea Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":43.55,"pb":43.55,"pmax":43.55,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9205216.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9205216.jpg"],"s":[["One Size",43.55,43.55]]}]},{"id":"adv-9244646","t":"Whittard of Chelsea Whittard of Chelsea  Whittard's Tea Advent Calendar, 48ct","u":"https://www.nordstrom.com/s/whittards-tea-advent-calendar-48ct/9244646","d":"Адвент-календарь Whittard of Chelsea: Whittard of Chelsea  Whittard's Tea Advent Calendar, 48ct.","c":"Адвент-календарь","g":"Adult","pa":48.99,"pb":48.99,"pmax":48.99,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9244646.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9244646.jpg"],"s":[["One Size",48.99,48.99]]}]},{"id":"adv-9284480","t":"YANKEE CANDLE YANKEE CANDLE  Signature Votive Mini Candle Jars - 12 Days of Christmas Candle Advent Calendar 2026","u":"https://www.nordstrom.com/s/signature-votive-mini-candle-jars-12-days-of-christmas-candle-advent-calendar-2026/9284480","d":"Адвент-календарь YANKEE CANDLE: YANKEE CANDLE  Signature Votive Mini Candle Jars - 12 Days of Christmas Candle Advent Calendar 2026.","c":"Адвент-календарь","g":"Adult","pa":76.2,"pb":76.2,"pmax":76.2,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9284480.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9284480.jpg"],"s":[["One Size",76.2,76.2]]}]},{"id":"adv-9205226","t":"Tea Forté Tea Forté  24-Piece Warming Joy Advent Calendar","u":"https://www.nordstrom.com/s/tea-forte-warming-joy-advent-calendar/9205226","d":"Адвент-календарь Tea Forté: Tea Forté  24-Piece Warming Joy Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":76.21,"pb":76.21,"pmax":76.21,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9205226.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9205226.jpg"],"s":[["One Size",76.21,76.21]]}]},{"id":"adv-8658107","t":"NEUHAUS NEUHAUS  2025 Classic Chocolate Advent Calendar","u":"https://www.nordstrom.com/s/2025-classic-chocolate-advent-calendar/8658107","d":"Адвент-календарь NEUHAUS: NEUHAUS  2025 Classic Chocolate Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":76.21,"pb":76.21,"pmax":76.21,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8658107.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8658107.jpg"],"s":[["One Size",76.21,76.21]]}]},{"id":"adv-9205213","t":"Tea Forté Tea Forté  Warming Joy Herbal Advent Calendar","u":"https://www.nordstrom.com/s/tea-forte-warming-joy-herbal-adv/9205213","d":"Адвент-календарь Tea Forté: Tea Forté  Warming Joy Herbal Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":76.21,"pb":76.21,"pmax":76.21,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9205213.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9205213.jpg"],"s":[["One Size",76.21,76.21]]}]},{"id":"adv-9356498","t":"Whittard of Chelsea Whittard of Chelsea  Whittard Hot Cocoa Advent Calendar","u":"https://www.nordstrom.com/s/whittard-hot-cocoa-advent-calendar/9356498","d":"Адвент-календарь Whittard of Chelsea: Whittard of Chelsea  Whittard Hot Cocoa Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":87.1,"pb":87.1,"pmax":87.1,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9356498.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9356498.jpg"],"s":[["One Size",87.1,87.1]]}]},{"id":"adv-9332398","t":"Elizabeth Arden Elizabeth Arden  12 Days of Elizabeth Arden Beauty, 12-Piece Advent Calendar Set","u":"https://www.nordstrom.com/s/12-days-of-elizabeth-arden-beauty-12-piece-advent-calendar-set/9332398","d":"Адвент-календарь Elizabeth Arden: Elizabeth Arden  12 Days of Elizabeth Arden Beauty, 12-Piece Advent Calendar Set.","c":"Адвент-календарь","g":"Adult","pa":97.99,"pb":97.99,"pmax":97.99,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9332398.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9332398.jpg"],"s":[["One Size",97.99,97.99]]}]},{"id":"adv-9260480","t":"Venchi Venchi  Prestige Advent Calendar","u":"https://www.nordstrom.com/s/venchi-advent-prestige-calendar-chris/9260480","d":"Адвент-календарь Venchi: Venchi  Prestige Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":107.79,"pb":107.79,"pmax":107.79,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9260480.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9260480.jpg"],"s":[["One Size",107.79,107.79]]}]},{"id":"adv-8658093","t":"NEUHAUS NEUHAUS  2025 Chocolate Story Advent Calendar Book","u":"https://www.nordstrom.com/s/2025-chocolate-story-advent-calendar-book/8658093","d":"Адвент-календарь NEUHAUS: NEUHAUS  2025 Chocolate Story Advent Calendar Book.","c":"Адвент-календарь","g":"Adult","pa":108.88,"pb":108.88,"pmax":108.88,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8658093.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8658093.jpg"],"s":[["One Size",108.88,108.88]]}]},{"id":"adv-9250307","t":"COMPARTES COMPARTES  Nutcracker Chocolate Advent Calendar","u":"https://www.nordstrom.com/s/compartes-nutcracker-advent-calendar/9250307","d":"Адвент-календарь COMPARTES: COMPARTES  Nutcracker Chocolate Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":130.65,"pb":130.65,"pmax":130.65,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9250307.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9250307.jpg"],"s":[["One Size",130.65,130.65]]}]},{"id":"adv-9244432","t":"Whittard of Chelsea Whittard of Chelsea  Hot Chocolate Advent Calendar, 48ct","u":"https://www.nordstrom.com/s/hot-chocolate-advent-calendar-48ct/9244432","d":"Адвент-календарь Whittard of Chelsea: Whittard of Chelsea  Hot Chocolate Advent Calendar, 48ct.","c":"Адвент-календарь","g":"Adult","pa":130.65,"pb":130.65,"pmax":130.65,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9244432.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9244432.jpg"],"s":[["One Size",130.65,130.65]]}]},{"id":"adv-9250294","t":"COMPARTES COMPARTES  Castle Chocolate Advent Calendar","u":"https://www.nordstrom.com/s/compartes-castle-advent-calendar/9250294","d":"Адвент-календарь COMPARTES: COMPARTES  Castle Chocolate Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":130.65,"pb":130.65,"pmax":130.65,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9250294.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9250294.jpg"],"s":[["One Size",130.65,130.65]]}]},{"id":"adv-8659593","t":"Whittard of Chelsea Whittard of Chelsea  Whittard Loose Leaf Tea Advent Calendar","u":"https://www.nordstrom.com/s/whittard-loose-leaf-tea-advent-calendar/8659593","d":"Адвент-календарь Whittard of Chelsea: Whittard of Chelsea  Whittard Loose Leaf Tea Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":130.65,"pb":130.65,"pmax":130.65,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8659593.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8659593.jpg"],"s":[["One Size",130.65,130.65]]}]},{"id":"adv-8558230","t":"COMPARTES COMPARTES  Winter Fox Chocolate Advent Calendar","u":"https://www.nordstrom.com/s/winter-fox-chocolate-advent-calendar/8558230","d":"Адвент-календарь COMPARTES: COMPARTES  Winter Fox Chocolate Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":130.65,"pb":130.65,"pmax":130.65,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8558230.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/8558230.jpg"],"s":[["One Size",130.65,130.65]]}]},{"id":"adv-9221724","t":"Voluspa Voluspa  Holiday Advent Calendar Gift Set","u":"https://www.nordstrom.com/s/voluspa-holiday-advent-calendar-gift-s/9221724","d":"Адвент-календарь Voluspa: Voluspa  Holiday Advent Calendar Gift Set.","c":"Адвент-календарь","g":"Adult","pa":201.42,"pb":201.42,"pmax":201.42,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9221724.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9221724.jpg"],"s":[["One Size",201.42,201.42]]}]},{"id":"adv-2278539","t":"JURLIQUE JURLIQUE  Advent Calendar","u":"https://www.nordstrom.com/s/advent-calendar/2278539","d":"Адвент-календарь JURLIQUE: JURLIQUE  Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":206.86,"pb":206.86,"pmax":206.86,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/2278539.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/2278539.jpg"],"s":[["One Size",206.86,206.86]]}]},{"id":"adv-9161280","t":"Glasshouse Fragrances Glasshouse Fragrances  24 Days of Christmas Advent Calendar","u":"https://www.nordstrom.com/s/glasshouse-fragrances-24-day-advent-calendar-x26/9161280","d":"Адвент-календарь Glasshouse Fragrances: Glasshouse Fragrances  24 Days of Christmas Advent Calendar.","c":"Адвент-календарь","g":"Adult","pa":326.63,"pb":326.63,"pmax":326.63,"disc":0,"vc":false,"vs":false,"im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9161280.jpg"],"cols":[{"n":"One Color","im":["https://llenka-coder.github.io/childrensplace-clearance/advent-combined/9161280.jpg"],"s":[["One Size",326.63,326.63]]}]}]</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => '$' + Number(n).toFixed(2).replace(/\.00$/, '');
+const fullImg = u => String(u).replace('/w_500,', '/w_1200,');
+
+const PAGE = 23;
+let shown = PAGE;
+
+// ---------- stats ----------
+const totalColors = DATA.reduce((a,p)=>a+p.cols.length,0);
+const totalSizes = DATA.reduce((a,p)=>a+p.cols.reduce((b,c)=>b+c.s.length,0),0);
+const totalImages = DATA.reduce((a,p)=>a+p.im.length,0);
+const prices = DATA.map(p=>p.pa);
+const varColor = DATA.filter(p=>p.vc).length;
+const varSize = DATA.filter(p=>p.vs).length;
+const varAny = DATA.filter(p=>p.vc||p.vs).length;
+$('#stats').innerHTML = [
+  `<span class="stat"><b>${DATA.length.toLocaleString('ru-RU')}</b> товаров</span>`,
+  `<span class="stat"><b>${totalColors.toLocaleString('ru-RU')}</b> цветов</span>`,
+  `<span class="stat"><b>${totalSizes.toLocaleString('ru-RU')}</b> размеров в наличии</span>`,
+  `<span class="stat"><b>${totalImages.toLocaleString('ru-RU')}</b> фото</span>`,
+  `<span class="stat">Цены <b>${money(Math.min(...prices))} – ${money(Math.max(...prices))}</b></span>`,
+  `<span class="stat">Макс. скидка <b>${Math.max(...DATA.map(p=>p.disc))}%</b></span>`,
+].join('');
+$('#varnote').innerHTML = varAny
+  ? `<b>Проверка цен по вариантам:</b> у ${varColor} товаров цена отличается по цвету, ` +
+    `у ${varSize} — по размеру (обычно Slim/Plus/Husky размеры дешевле). ` +
+    `Всего ${varAny} товаров с разной ценой внутри вариантов — они отмечены в карточке.`
+  : `<b>Цены по вариантам:</b> в этой версии оставлены только товары с одинаковой ценой ` +
+    `по всем цветам и размерам. Товары, у которых цена отличается, исключены.`;
+
+// ---------- filters ----------
+const cats = [...new Set(DATA.map(p=>p.c))].sort((a,b)=>a.localeCompare(b,'en'));
+$('#cat').innerHTML += cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+const ages = [...new Set(DATA.map(p=>p.g).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'en'));
+$('#age').innerHTML += ages.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+
+const state = {q:'', cat:'', age:'', pmin:null, pmax:null, sort:'price-asc', varies:false};
+
+function filtered(){
+  let list = DATA.filter(p=>{
+    if(state.cat && p.c!==state.cat) return false;
+    if(state.age && p.g!==state.age) return false;
+    if(state.pmin!=null && p.pa<state.pmin) return false;
+    if(state.pmax!=null && p.pa>state.pmax) return false;
+    if(state.varies && !(p.vc||p.vs)) return false;
+    if(state.q){
+      const hay = (p.t+' '+p.d+' '+p.c+' '+p.g+' '+p.cols.map(c=>c.n+' '+c.s.map(s=>s[0]).join(' ')).join(' ')).toLowerCase();
+      if(!hay.includes(state.q)) return false;
+    }
+    return true;
+  });
+  const s = state.sort;
+  list.sort((a,b)=>
+    s==='price-asc' ? a.pa-b.pa || b.disc-a.disc :
+    s==='price-desc' ? b.pa-a.pa :
+    s==='name' ? a.t.localeCompare(b.t,'en') :
+    b.disc-a.disc || a.pa-b.pa
+  );
+  return list;
+}
+
+// ---------- card ----------
+function sizesHtml(col){
+  return `<div class="sizes"><div class="head"><span>Размер</span><span>Цена</span></div>` +
+    col.s.map(([name,price,list])=>`
+      <div class="size-row">
+        <span class="v-name">${esc(name)}</span>
+        <span class="v-price"><b>${money(price)}</b>${list>price?`<s>${money(list)}</s>`:''}</span>
+      </div>`).join('') + `</div>`;
+}
+
+function colorMin(col){
+  return col.s.reduce((best,s)=> s[1] < best[1] ? s : best, col.s[0]);
+}
+function card(p){
+  // по умолчанию — самый дешёвый цвет
+  let defIdx = 0, defPrice = Infinity;
+  p.cols.forEach((c,i)=>{ const m = colorMin(c); if(m[1] < defPrice){ defPrice = m[1]; defIdx = i; } });
+  const col = p.cols[defIdx];
+  const best = colorMin(col);
+  const imgs = col.im.length ? col.im : p.im;
+  const first = imgs[0] || '';
+  const disc = best[2] > best[1] ? Math.round((1 - best[1]/best[2])*100) : p.disc;
+  const range = (p.vc || p.vs)
+    ? `<div class="range">${p.vc?'Цена зависит от цвета. ':''}${p.vs?'Цена зависит от размера. ':''}Показан выбранный вариант; в карточке — все цены.</div>`
+    : '';
+  const chips = p.cols.length > 1
+    ? `<div class="colors"><span class="name">Цвет:</span>${p.cols.map((c,i)=>
+        `<button class="chip ${i===defIdx?'active':''}" data-color="${i}">${esc(c.n)}</button>`).join('')}</div>`
+    : `<div class="colors"><span class="name">Цвет:</span><span class="chip active">${esc(col.n)}</span></div>`;
+  const thumbs = `<div class="thumbs">${imgs.map((im,i)=>
+      `<img src="${esc(im)}" data-i="${i}" class="${i===0?'active':''}" loading="lazy" alt="">`).join('')}</div>`;
+
+  return `<article class="card" data-id="${p.id}"
+      data-price="${p.pa.toFixed(2)}"
+      data-old-price="${p.pb.toFixed(2)}"
+      data-compare-at-price="${p.pb.toFixed(2)}"
+      itemscope itemtype="https://schema.org/Product">
+    <meta itemprop="name" content="${esc(p.t)}">
+    <meta itemprop="sku" content="${esc(p.id)}">
+    <meta itemprop="image" content="${esc(first)}">
+    <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+      <meta itemprop="price" content="${p.pa.toFixed(2)}">
+      <meta itemprop="priceCurrency" content="USD">
+      <meta itemprop="listPrice" content="${p.pb.toFixed(2)}">
+      <meta itemprop="highPrice" content="${p.pb.toFixed(2)}">
+      <link itemprop="availability" href="https://schema.org/InStock">
+    </div>
+    <div class="gallery" data-i="0">
+      <img class="main" src="${esc(first)}" alt="${esc(p.t)}" loading="lazy">
+      ${imgs.length>1?`<button class="nav prev" data-nav="-1" aria-label="Назад">‹</button>
+      <button class="nav next" data-nav="1" aria-label="Вперёд">›</button>
+      <div class="counter">1/${imgs.length}</div>`:''}
+      <div class="off" ${disc?'':'hidden'}>−${disc}%</div>
+    </div>
+    ${thumbs}
+    <div class="body">
+      <div class="cat">${esc(p.c)}${p.g?' · '+esc(p.g):''}</div>
+      <h2><a href="${esc(p.u)}" target="_blank" rel="noopener">${esc(p.t)}</a></h2>
+      <div class="prices">
+        <span class="after price sale-price" data-price="${best[1].toFixed(2)}">${money(best[1])}</span>
+        <del class="before old-price compare-at-price regular-price"
+          data-old-price="${best[2].toFixed(2)}" ${best[2]>best[1]?'':'hidden'}>${money(best[2])}</del>
+        <span class="save" ${best[2]>best[1]?'':'hidden'}>−${disc}%</span>
+      </div>
+      ${range}
+      <p class="desc">${esc(p.d)}</p>
+      <button class="more" hidden>Читать далее</button>
+      ${chips}
+      <div class="sizes-wrap">${sizesHtml(col)}</div>
+    </div>
+  </article>`;
+}
+
+function render(reset){
+  if(reset) shown = PAGE;
+  const list = filtered();
+  const slice = list.slice(0, shown);
+  $('#grid').innerHTML = slice.map(card).join('');
+  $('#empty').hidden = list.length>0;
+  $('#count').textContent = `${Math.min(shown,list.length)} из ${list.length} (всего ${DATA.length})`;
+  $('#load').hidden = shown >= list.length;
+  $('#loadall').hidden = shown >= list.length;
+  document.querySelectorAll('.desc').forEach(el=>{
+    const btn = el.nextElementSibling;
+    if(el.scrollHeight > el.clientHeight + 2) btn.hidden = false;
+  });
+}
+
+// ---------- color switch ----------
+function setColor(cardEl, idx){
+  const p = DATA.find(x=>x.id===cardEl.dataset.id);
+  const col = p.cols[idx];
+  if(!col) return;
+  cardEl.querySelectorAll('.colors .chip').forEach((c,i)=>c.classList.toggle('active', i===idx));
+  // gallery
+  const g = cardEl.querySelector('.gallery');
+  const imgs = col.im.length ? col.im : p.im;
+  g.dataset.i = 0;
+  g.querySelector('img.main').src = imgs[0] || '';
+  const counter = g.querySelector('.counter');
+  if(counter) counter.textContent = `1/${imgs.length}`;
+  // thumbs
+  const th = cardEl.querySelector('.thumbs');
+  if(th){
+    th.innerHTML = imgs.map((im,i)=>`<img src="${esc(im)}" data-i="${i}" class="${i===0?'active':''}" loading="lazy" alt="">`).join('');
+  }
+  // sizes
+  cardEl.querySelector('.sizes-wrap').innerHTML = sizesHtml(col);
+  // price
+  const best = colorMin(col);
+  const price = best[1], list = best[2];
+  const disc = list>price ? Math.round((1-price/list)*100) : 0;
+  const after = cardEl.querySelector('.after');
+  const before = cardEl.querySelector('.before');
+  const save = cardEl.querySelector('.save');
+  after.textContent = money(price); after.dataset.price = price.toFixed(2);
+  before.textContent = money(list); before.dataset.oldPrice = list.toFixed(2);
+  before.hidden = !(list>price);
+  save.textContent = `−${disc}%`; save.hidden = !(list>price);
+  const off = cardEl.querySelector('.off');
+  off.textContent = `−${disc}%`; off.hidden = !(list>price);
+}
+
+// ---------- events ----------
+let t;
+$('#q').addEventListener('input', e=>{
+  clearTimeout(t);
+  t = setTimeout(()=>{ state.q = e.target.value.trim().toLowerCase(); render(true); }, 140);
+});
+$('#cat').addEventListener('change', e=>{ state.cat = e.target.value; render(true); });
+$('#age').addEventListener('change', e=>{ state.age = e.target.value; render(true); });
+$('#sort').addEventListener('change', e=>{ state.sort = e.target.value; render(true); });
+$('#varies').addEventListener('change', e=>{ state.varies = e.target.checked; render(true); });
+$('#pmin').addEventListener('input', e=>{ state.pmin = e.target.value===''?null:+e.target.value; render(true); });
+$('#pmax').addEventListener('input', e=>{ state.pmax = e.target.value===''?null:+e.target.value; render(true); });
+$('#load').addEventListener('click', ()=>{ shown += PAGE; render(false); });
+$('#loadall').addEventListener('click', ()=>{ shown = filtered().length; render(false); });
+
+document.addEventListener('click', e=>{
+  const chip = e.target.closest('[data-color]');
+  if(chip){
+    setColor(chip.closest('.card'), +chip.dataset.color);
+    return;
+  }
+  const nav = e.target.closest('[data-nav]');
+  if(nav){
+    const g = nav.closest('.gallery');
+    const cardEl = g.closest('.card');
+    const p = DATA.find(x=>x.id===cardEl.dataset.id);
+    const idx = +cardEl.querySelector('.colors .chip.active')?.dataset.color || 0;
+    const imgs = p.cols[idx]?.im.length ? p.cols[idx].im : p.im;
+    const dir = +nav.dataset.nav;
+    const i = ((+g.dataset.i + dir) + imgs.length) % imgs.length;
+    setImage(g, imgs, i);
+    return;
+  }
+  const th = e.target.closest('.thumbs img');
+  if(th){
+    const cardEl = th.closest('.card');
+    const g = cardEl.querySelector('.gallery');
+    const p = DATA.find(x=>x.id===cardEl.dataset.id);
+    const idx = +cardEl.querySelector('.colors .chip.active')?.dataset.color || 0;
+    const imgs = p.cols[idx]?.im.length ? p.cols[idx].im : p.im;
+    setImage(g, imgs, +th.dataset.i);
+    return;
+  }
+  const main = e.target.closest('.gallery img.main');
+  if(main){
+    const cardEl = main.closest('.card');
+    const g = main.closest('.gallery');
+    const p = DATA.find(x=>x.id===cardEl.dataset.id);
+    const idx = +cardEl.querySelector('.colors .chip.active')?.dataset.color || 0;
+    const imgs = p.cols[idx]?.im.length ? p.cols[idx].im : p.im;
+    openLb(p, imgs, +g.dataset.i);
+    return;
+  }
+  const more = e.target.closest('.more');
+  if(more){
+    const d = more.previousElementSibling;
+    d.classList.toggle('open');
+    more.textContent = d.classList.contains('open') ? 'Свернуть' : 'Читать далее';
+    return;
+  }
+  const lb = e.target.closest('[data-lb]');
+  if(lb){
+    const act = lb.dataset.lb;
+    if(act==='close' || e.target.id==='lightbox') closeLb();
+    if(act==='prev') stepLb(-1);
+    if(act==='next') stepLb(1);
+  }
+  if(e.target.id==='lightbox') closeLb();
+});
+document.addEventListener('keydown', e=>{
+  if(!$('#lightbox').classList.contains('open')) return;
+  if(e.key==='Escape') closeLb();
+  if(e.key==='ArrowLeft') stepLb(-1);
+  if(e.key==='ArrowRight') stepLb(1);
+});
+
+function setImage(g, imgs, i){
+  g.dataset.i = i;
+  g.querySelector('img.main').src = imgs[i];
+  const c = g.querySelector('.counter');
+  if(c) c.textContent = `${i+1}/${imgs.length}`;
+  g.closest('.card').querySelectorAll('.thumbs img').forEach(x=>x.classList.toggle('active', +x.dataset.i===i));
+}
+
+// ---------- lightbox ----------
+let lbState = null;
+function openLb(p, imgs, i){
+  lbState = {p, imgs, i};
+  updateLb();
+  $('#lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function updateLb(){
+  const {p,imgs,i} = lbState;
+  $('#lb-img').src = fullImg(imgs[i]);
+  $('#lb-img').alt = p.t;
+  $('#lb-cap').textContent = `${p.t} — ${i+1} / ${imgs.length}`;
+}
+function stepLb(d){
+  if(!lbState) return;
+  lbState.i = (lbState.i + d + lbState.imgs.length) % lbState.imgs.length;
+  updateLb();
+}
+function closeLb(){
+  $('#lightbox').classList.remove('open');
+  document.body.style.overflow='';
+  lbState = null;
+}
+
+render(true);
+</script>
+</body>
+</html>
