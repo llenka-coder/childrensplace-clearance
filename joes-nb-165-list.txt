@@ -1,0 +1,165 @@
+001	M5502MF	550 | Sea Salt	$81.99	размеры: M5.5 / W7, M6 / W7.5, M6.5 / W8
+002	UADWLWO	Made in UK Allerdale | Vaporous Grey	$186.99	размеры: M4 / W5.5, M5 / W6.5, M6.5 / W8, M7 / W8.5, M9.5 / W11, M15 / W16.5
+003	BB550EMR	550 | Sea Salt	$59.99	размеры: 5.5, 6.5, 8.5
+004	BB550LEA	550 | Sea Salt	$69.99	размеры: M6 / W7.5, M7 / W8.5, M9 / W10.5, M9.5 / W11
+005	P10009LZ	1000 Lace | Black	$59.99	размеры: 11, 12, 13, 1, 2, 2.5, 3
+006	LAKG0081DAB	Athletic Tank | Dragon Berry	$16.99	размеры: 10-11 Y, 12-13 Y, 14-15 Y, 15-16 Y
+007	WT43453WT	Coco Gauff Exuberance T-Shirt | White	$27.99	размеры: M, L, XL, 2XL
+008	YB61D9UCNNY	Premium Paneled Short | Nb Navy	$27.99	размеры: 7-8 Y, 9-10 Y, 10-11 Y, 12-13 Y
+009	UT3MW34A	Tekela Women's Team Low MG V5 | Pink Heat	$66.99	размеры: M4 / W5.5, M5.5 / W7
+010	WT43452BK	Coco Gauff Preparations Racer Tank | Black	$27.99	размеры: M, L, XL, 2XL
+011	MS41FSG2	442 v2 Pro FG | Silver	$69.99	размеры: M13 / W14.5
+012	PL4040K6	FuelCell 4040 v6 Molded | Black	$39.99	размеры: 16
+013	BURNXLO3	BurnX3 | White	$79.99	размеры: 5
+014	BURNXLB3	BurnX3 | Black	$79.99	размеры: M5.5 / W7
+015	UT21503NGO	Uni-ssentials Cotton T-Shirt | Natural Indigo	$14.99	размеры: U0, U1
+016	ML515WNV	515 | Nb Navy	$59.99	размеры: 7, 8, 10, 14, 15, 16
+017	LAKG0083BK	Harmony High Rise Sport Cycle Short | Black	$18.99	размеры: 10-11 Y, 12-13 Y, 14-15 Y, 15-16 Y
+018	MS41FEF2	442 ELITE FG V2 | Hi-Lite	$84.99	размеры: 4.5, 5, 12.5, 13
+019	LAKG0128BWE	Floral Back Graphic Crew | Bright White	$32.99	размеры: 10-11 Y, 12-13 Y, 14-15 Y
+020	YT3FL6OG	Tekela Team Low Jnr FG V5 | Pink Heat	$47.99	размеры: 3.5, 4.5, 5, 5.5, 6
+021	WT53561PPF	Made in USA Cropped Top | Purple Fuschia	$70.99	размеры: S, L, XL
+022	MS41FRR2	442 V2 PRO FG | Red	$69.99	размеры: M5 / W6.5
+023	LAKG0019DIO	Brush Back Floral Sneaker Back Graphic Hoodie | Dark Olivine	$29.99	размеры: 12-13 Y, 14-15 Y
+024	LAKG0120DTR	Floral Vines Back Graphic T-Shirt | Drift Red	$17.99	размеры: 12-13 Y, 14-15 Y
+025	LAKG0116BWE	Tennis Girl Graphic T-Shirt | Bright White	$17.99	размеры: 12-13 Y, 14-15 Y
+026	LAKB0033BUL	BB Greatest Hits Graphic Hoodie | Blue Oasis	$27.99	размеры: 14-15 Y, 15-16 Y
+027	LAKG0095LIN	Premium Coach Jacket | Linen	$49.99	размеры: 12-13 Y, 14-15 Y
+028	LAKG0139RIG	Premium Rib Tank | Bright Lavender	$17.99	размеры: 12-13 Y, 14-15 Y
+029	LAKB0534BU2	Australian Open Performance Polo | Blue Bird Ii	$37.99	размеры: 9-10 Y, 12-13 Y
+030	S41FEBK2	442 PRO FG V2 NON KL | Black	$59.99	размеры: M6.5 / W8, M7 / W8.5
+031	WS43510DUO	NB French Terry Short | Dark Mushroom	$26.99	размеры: XS, S
+032	MCH696W6	696v6 | Nb White	$59.99	размеры: 7, 7.5, 8.5, 9, 13
+033	U100040B	1000 | Faded Black	$99.99	размеры: M8 / W9.5, M8.5 / W10, M9 / W10.5, M9.5 / W11, M10 / W11.5, M10.5 / W12, M11 / W12.5, M11.5 / W13, M12 / W13.5, M13 / W14.5
+034	PAARIAB4	Fresh Foam Arishi v4 Bungee Lace with Top Strap | Black	$39.99	размеры: нет
+035	LAKG0119BWE	Running Club Graphic T-Shirt | Bright White	$15.99	размеры: 12-13 Y, 14-15 Y
+036	MT43710NNY	Lindor Relaxed Legacy T-Shirt | Nb Navy	$35.99	размеры: S, M
+037	LAKG0060LIR	French Terry Stacked Logo Hoodie | Light Raspberry	$29.99	размеры: 12-13 Y, 14-15 Y
+038	LAKG0121LIR	Floral Graphic T-Shirt | Light Raspberry	$15.99	размеры: 12-13 Y, 14-15 Y
+039	PM4040W7	FuelCell 4040v7 Mid-Molded | Optic White	$77.99	размеры: 13, 15
+040	WT43536AHH	Logo Oversized Jersey T-Shirt | Ash Heather	$30.99	размеры: XL, 2XL
+041	LAKG0209BWE	Colorblock Shoe Graphic Hoodie | Bright White	$39.99	размеры: 9-10 Y, 10-11 Y
+042	ST3FN45	TEKELA MAGIQUE FG V4+ | Nb Navy	$41.99	размеры: M12 / W13.5
+043	SJT3FH45	TEKELA MAGIQUE JNR FG V4+ | White	$51.99	размеры: 6
+044	ST2FLJ45	TEKELA MAGIA LOW LACED FG V4+ | Parchment	$93.99	размеры: M5.5 / W7
+045	WCH996B6	FuelCell 996v6 | Black	$89.99	размеры: 5, 5.5, 6, 6.5, 7, 9, 9.5, 10
+046	SF2FEJ8	FURON PRO FG V8 | Passion Fruit	$134.99	размеры: M6.5 / W8, M12 / W13.5
+047	URC56UPA	RC56 | Ice Wine	$89.99	размеры: M6 / W7.5, M6.5 / W8, M7 / W8.5, M7.5 / W9, M8 / W9.5, M8.5 / W10, M11 / W12.5, M11.5 / W13, M12 / W13.5
+048	SJF3FB75	FURON DISPATCH JNR FG V7+ | Black	$49.99	размеры: 11, 11.5
+049	SJT3FM45	TEKELA MAGIQUE JNR FG V4+ | Black	$34.99	размеры: 11
+050	SMVELOC4	Fresh Foam X Velo v4 Metal | Nb 103 White	$81.99	размеры: 5, 5.5, 13
+051	LMLINDL2	FuelCell Lindor 2 Metal | Team Away Grey	$89.99	размеры: 5, 7, 12.5, 13, 15, 16
+052	NW515WN	515 NEW-B HOOK & LOOP | Dream State	$34.99	размеры: 5, 6, 7.5, 8, 9, 9.5, 10
+053	CT500SNB	T500 | Bisque	$81.99	размеры: 4.5, 5, 5.5, 6, 6.5, 7.5
+054	L3000IT7	3000v7 Lab Work | White	$91.99	размеры: 5.5, 9.5, 10, 12.5, 14
+055	UF1MW8JM	Furon Women's Elite MG V8 | Punch Yellow	$160.99	размеры: M4 / W5.5, M4.5 / W6, M5 / W6.5, M5.5 / W7, M6 / W7.5
+056	CT500NVP	T500 | Vintage Indigo	$69.99	размеры: 4, 4.5, 5, 5.5, 6, 10, 14
+057	MC806W	806 | White	$92.99	размеры: 10.5, 11.5, 12
+058	MT43711DLC	Lindor Fleece Pullover | Dolce	$69.99	размеры: S
+059	WP51202DEK	Sport High Rise Legging 25" | Dark Olivine	$27.99	размеры: XS, S
+060	WVELO5CX	Velo V4 | Nb 103 White	$79.99	размеры: 9
+061	LAKB0164BWE	Athletics Relaxed Player Graphic T-Shirt | Bright White	$18.99	размеры: 10-11 Y
+062	MT615574BK	Shohei Blast T-Shirt | Caviar	$30.99	размеры: XS, S
+063	L3000SD7	Fresh Foam X 3000v7 | Carolina Blue	$81.99	размеры: 6, 15, 16
+064	WB61I5C9HTM	Coco Gauff Signature Melbourne Skirt | Hot Marigold	$75.99	размеры: M
+065	MS41FBI2	442 v2 Limited Edition FG | Black	$104.99	размеры: 6.5, 13
+066	MS51541SST	Made in USA Woven Short | Sea Salt	$147.99	размеры: L
+067	MSHOTP1	FuelCell Ohtani 1 Mothers Day | Team Away Grey	$119.99	размеры: 16
+068	WS51271WAD	RC Pocket High Rise Short 6" | Washed Burgundy	$41.99	размеры: XL
+069	ST2FLMP5	TEKELA PRO LOW LACED FG V5 | Blue Gemstone	$99.99	размеры: M7 / W8.5, M12 / W13.5
+070	UF1T92S	Furon Elite TF V8 | Punch Yellow	$104.99	размеры: M4 / W5.5, M4.5 / W6, M6 / W7.5, M6.5 / W8
+071	M5152JC	515 | Phantom	$59.99	размеры: 7.5, 10, 10.5, 11.5, 12, 13
+072	ST3FH45	TEKELA MAGIQUE FG V4+ | White	$69.99	размеры: M12.5 / W14, M13 / W14.5
+073	PTFCYAB	FuelCell Play Bungee w/ top strap | White	$39.99	размеры: 12.5
+074	P08088A	080 Lace | White	$44.99	размеры: 11.5, 1
+075	UT3FL9J8	Tekela Team Low FG V5 | Pink Heat	$70.99	размеры: M4.5 / W6, M5 / W6.5, M5.5 / W7
+076	UMDELRE2	FuelCell SuperComp MD-X v2 | White	$49.99	размеры: M6 / W7.5, M6.5 / W8
+077	MP51065DOK	AC Jogger | Dockside	$62.99	размеры: L
+078	MT51500CEE	Athletics Logo T-Shirt | Clementine	$29.99	размеры: L
+079	LAKG0123LIN	Gradient Graphic T-Shirt | Linen	$15.99	размеры: 14-15 Y
+080	M4040TW6	FuelCell 4040 v6 Mid-Metal | White	$49.99	размеры: 16
+081	L4040AP6	FuelCell 4040 v6 Mother's Day | Pink	$81.99	размеры: 14, 15
+082	ST1FLI45	TEKELA PRO LOW LACED FG V4+ | Black	$149.99	размеры: M4.5 / W6, M5 / W6.5, M5.5 / W7, M6.5 / W8, M12 / W13.5, M12.5 / W14
+083	ST1FM45	TEKELA PRO FG V4+ | Black	$89.99	размеры: M5 / W6.5, M5.5 / W7
+084	SF1FB75	FURON PRO FG V7+ | Black	$59.99	размеры: M13 / W14.5
+085	ST1FLH45	TEKELA PRO LOW LACED FG V4+ | White	$89.99	размеры: M4 / W5.5
+086	MRAL2BG	Fresh Foam X CT-Rally v2 | Pink Heat	$111.99	размеры: 15
+087	BBHSLMT2	HESI LOW V2 | Black	$84.99	размеры: M7.5 / W9, M8 / W9.5, M8.5 / W10, M12 / W13.5, M12.5 / W14, M13 / W14.5, M14 / W15.5, M16 / W17.5, M17 / W18.5
+088	U509E4CN	509 | Black	$99.99	размеры: M10 / W11.5, M11.5 / W13, M13 / W14.5
+089	CT500PHA	T500 | Pink Taffy	$69.99	размеры: M9 / W10.5, M9.5 / W11, M10 / W11.5, M11 / W12.5
+090	CT500GB	T500 | Landslide	$69.99	размеры: M4 / W5.5
+091	MT51544DGL	Made in USA Graphic T-Shirt | Dawn Glow	$59.99	размеры: M
+092	L574AS1	Fresh Foam X 574 Lux | Veg Tan	$69.99	размеры: M5 / W6.5, M6.5 / W8, M7 / W8.5, M16 / W17.5
+093	WD61S5ECWT	Tournament Dress | White	$62.99	размеры: S
+094	MSD100L5	FuelCell SD100 v5 | Thirty Watt	$29.99	размеры: 13
+095	MMD500F8	MD500v8 | Blue	$29.99	размеры: 13
+096	USDELRE2	FuelCell SuperComp SD-X | Dragonfly	$79.99	размеры: M4.5 / W6, M11.5 / W13, M12 / W13.5, M14 / W15.5
+097	USDELSE1	FuelCell SuperComp PWR-X | Dragonfly	$99.99	размеры: M4.5 / W6, M11.5 / W13, M13 / W14.5, M14 / W15.5
+098	IDROVTK	ROAV  H&L | Black	$39.99	размеры: 2, 4, 5
+099	SJROMPK2	Romero Duo Rubber Molded | Black	$39.99	размеры: 10.5
+100	G0806KG	080 Lace | White	$47.99	размеры: 4.5, 7
+101	U471PSA	471 | Dark Olivine	$74.99	размеры: M4 / W5.5, M4.5 / W6, M5.5 / W7
+102	JS43FWW2	442 V2 ACADEMY JNR FG | White	$47.99	размеры: 13.5
+103	WCH696W6	696v6 | Nb White	$59.99	размеры: 6
+104	FREEZLU5	FreezeLX v5 LE | White	$83.99	размеры: M4.5 / W6, M5 / W6.5, M5.5 / W7, M6 / W7.5, M7 / W8.5, M15 / W16.5
+105	SPVELOC4	Fresh Foam X Velo v4 Molded | Nb 103 White	$74.99	размеры: 12, 13
+106	US21500BK	Uni-ssentials French Terry Short | Black	$17.99	размеры: U0
+107	MS43903MHB	Sport Fleece Short 9" | Monarch Burgundy	$27.99	размеры: XS
+108	PC1000MS	1000 | Team Royal	$70.99	размеры: 11, 1.5
+109	U480L1AI	480 | Reflection	$74.99	размеры: M4.5 / W6, M9.5 / W11, M14 / W15.5
+110	SF3FIB8	FURON TEAM FG V8 | White	$71.99	размеры: M5 / W6.5, M5.5 / W7, M12.5 / W14
+111	STFUSEE5	Fuse v5 Turf Ring Season | White	$69.99	размеры: 13
+112	Y43F4NK	442 Team Jnr FG V3 | Sea Salt	$44.99	размеры: 1, 3.5, 4.5, 6
+113	FREEZSL5	FreezeLX v5 Liquid Silver | White	$74.99	размеры: M4.5 / W6
+114	IC990GN6	990v6 | Grey Matter	$66.99	размеры: 3
+115	SMVELOK3	Fresh Foam X Velo v3 Metal | Black	$39.99	размеры: 5
+116	MS41FH2	442 PRO FG V2 | Hot Mango	$59.99	размеры: 4.5, 5, 6, 7, 7.5
+117	PT625EB	Fresh Foam 625 Bungee Lace | Black	$44.99	размеры: 11
+118	ST3FMP5	TEKELA TEAM LOW LACED FG V5 | Blue Gemstone	$59.99	размеры: M6 / W7.5, M6.5 / W8, M7 / W8.5, M7.5 / W9, M12.5 / W14
+119	MS41FEB2	442 ELITE FG V2 | White	$89.99	размеры: 5.5, 6
+120	L3000AF6	Fresh Foam X 3000v6 Armed Forces Day | Black	$29.99	размеры: 16
+121	SF3FEJ8	FURON TEAM FG V8 | Passion Fruit	$69.99	размеры: M5 / W6.5
+122	SJT3FMP5	TEKELA TEAM LOW LACED JNR FG V5 | Blue Gemstone	$59.99	размеры: 11
+123	WCH996W6	FuelCell 996v6 | Nb White	$89.99	размеры: 5.5, 6.5, 10
+124	SJF3FMP8	FURON TEAM JNR FG V8 | Energy Red	$39.99	размеры: 11
+125	MARISSB4	Fresh Foam Arishi v4 Slip Resistant | Black	$59.99	размеры: 12
+126	FREEZAA5	FreezeLX v5 | White	$109.99	размеры: M4 / W5.5, M4.5 / W6, M5 / W6.5, M15 / W16.5
+127	PL4040K7	FuelCell 4040v7 Molded | Black	$49.99	размеры: 15, 16
+128	ST3FSP5	TEKELA TEAM LOW LACED FG V5 | White	$59.99	размеры: M5 / W6.5
+129	SPROMBK2	FuelCell Romero Duo Comp | Black	$79.99	размеры: 6.5, 7, 7.5
+130	W997H8UT	997H | Timberwolf	$69.99	размеры: 9.5
+131	MS42FBK2	442 V2 TEAM FG | Black	$74.99	размеры: M6.5 / W8, M7 / W8.5, M10.5 / W12
+132	U200227R	2002DX | Slate Grey	$135.99	размеры: M5 / W6.5, M6 / W7.5
+133	MBALCE1	Fresh Foam X Balos v1 | Urgent Red	$119.99	размеры: 13
+134	WT51908AHH	Athletics Premium Chest Logo Cropped T-Shirt | Ash Heather	$30.99	размеры: XL
+135	RUSHMWT4	Rush v4 Mid | White	$34.99	размеры: M14 / W15.5
+136	WL515HGR	515H | Grey	$62.99	размеры: 12
+137	CT300NJ3	CT300 | Sea Salt	$39.99	размеры: 6.5
+138	JS43FMP2	442 ACADEMY JNR FG V2 | Nb Navy	$39.99	размеры: 10.5, 11.5
+139	BURNLB4	BurnX4 | Black	$79.99	размеры: M5 / W6.5, M6.5 / W8
+140	MTM10LEC	M10L | Angora	$89.99	размеры: 5.5
+141	RCVRYSS1	Shohei x NB RCVRY Slide | Sea Salt	$39.99	размеры: 4
+142	SF1FIB8	FURON ELITE FG V8 | White	$149.99	размеры: M8.5 / W10
+143	U5002D3	T500 | White	$81.99	размеры: M10.5 / W12
+144	UTFOA4U0	TF100 | Angora	$104.99	размеры: M12 / W13.5
+145	KCCOCOW2	Kid's Coco CG2 | White	$59.99	размеры: 12
+146	WCRUZRL3	Fresh Foam X CRUZ v3 | Sea Salt	$59.99	размеры: 5
+147	MS41FG2	442 PRO FG V2 | Concrete	$59.99	размеры: M6 / W7.5, M6.5 / W8
+148	SF3FSP8	FURON TEAM FG V8 | Pixel Green	$69.99	размеры: M4.5 / W6, M11 / W12.5
+149	STVELOK4	Fresh Foam Velo v4 Turf-Trainer | Black	$70.99	размеры: 7
+150	M1000518	1000 | Grey Matter	$111.99	размеры: 4
+151	MCH996W6	FuelCell 996v6 | White	$99.99	размеры: 10
+152	LLINDLS2	FuelCell Lindor 2 Comp | Team Away Grey	$79.99	размеры: M14 / W15.5
+153	MCHCODAO	Coco Delray | White	$76.99	размеры: 7.5
+154	WCHCODAO	Coco Delray | White	$79.99	размеры: 5
+155	MS42FMP2	442 TEAM FG V2 | Nb Navy	$69.99	размеры: M6.5 / W8
+156	W860A14	Fresh Foam X 860v14 | Black	$69.99	размеры: 5
+157	PAARIYN4	Fresh Foam Arishi v4 Bungee Lace with Top Strap | Inkwell	$39.99	размеры: 3
+158	ML515AGR	515 | Black	$69.99	размеры: 15, 17
+159	L3000BK6	Fresh Foam X 3000 v6 Metal | Black	$54.99	размеры: 5.5
+160	ST1FLWO5	TEKELA ELITE LOW LACED FG V5 1ST EDITION | Hi-Lite	$111.99	размеры: M4 / W5.5
+161	L3000RB7	Fresh Foam X 3000v7 | White	$65.99	размеры: 5.5
+162	L3000AF7	3000v7 Armed Forces | Camo Green	$65.99	размеры: 5
+163	NW515KI	515 NEW-B HOOK & LOOP | Rose Sugar	$44.99	размеры: 3.5
+164	MMD500B9	FuelCell MD500 v9 | Black	$39.99	размеры: 12
+165	M550L7HW	550 | Stone Pink	$89.99	размеры: M13 / W14.5
